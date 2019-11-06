@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playground-deploy
+  labels:
+    app: playground
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playground
+  template:
+    metadata:
+      labels:
+        app: playground
+    spec:
+      containers:
+      - name: playground
+        image: playground:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+          name: webinterface
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: playground
+  labels:
+    service: playground
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    name: webinterface
+  selector:
+    app: playground
